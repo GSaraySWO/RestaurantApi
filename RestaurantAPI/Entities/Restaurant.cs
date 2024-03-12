@@ -13,5 +13,7 @@
         public int AddressId { get; set; }
         public virtual List<Dish> Dishes { get; set; }
 
+        public string OwnerName { get; set; }
+
     }
 }

@@ -33,21 +33,62 @@ namespace RestaurantAPI.Controllers
         public ActionResult<List<Restaurant>> GetAll()
         {
             _logger.LogInformation("GET all ►►► NO PARAMS ◄◄◄");
-
             return Ok(Restaurants);
         }
 
         [HttpGet("{id}")]
         public ActionResult<Restaurant> GetById(int id)
         {
-            var restaurant = Restaurants.Find(p => p.Id == id);
+            _logger.LogInformation("GET by ID ►►► ID: " + id + " ◄◄◄");
 
+            var restaurant = Restaurants.Find(p => p.Id == id);
+            if (restaurant == null)            
+            {
+                return NotFound();
+            }
+            return Ok(restaurant);
+        }
+
+        [HttpPost]
+        public ActionResult Create(Restaurant restaurant)
+        {
+            Restaurants.Add(restaurant);
+            return CreatedAtAction(nameof(GetById), new { id = restaurant.Id }, restaurant);
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult Update(int id, Restaurant restaurant)
+        {
+            var existingRestaurant = Restaurants.Find(x => x.Id == id);
+            if (existingRestaurant == null)
+            {
+                return NotFound();
+            }
+            existingRestaurant.Name = restaurant.Name;
+            existingRestaurant.Category = restaurant.Category;
+            existingRestaurant.Description = restaurant.Description;
+            existingRestaurant.ContactEmail = restaurant.ContactEmail;
+            existingRestaurant.ContactNumber = restaurant.ContactNumber;
+            existingRestaurant.HasDelivery = restaurant.HasDelivery;
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            var restaurant = Restaurants.Find(x => x.Id == id);
             if (restaurant == null)
             {
                 return NotFound();
             }
-
-            return Ok(restaurant);
+            Restaurants.Remove(restaurant);
+            return NoContent();
         }
+
+        
+
+        
+
+
     }
 }
