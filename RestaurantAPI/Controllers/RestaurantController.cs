@@ -26,14 +26,6 @@ namespace RestaurantAPI.Controllers
                 ContactEmail = "user@kfc.com",
                 ContactNumber = "1234567890",
                 HasDelivery = true
-            },
-            new Restaurant
-            {
-                Id = 2,
-                Name = "McDonald's",
-                Category = "Fast Food",
-                Description = "McDonald's Corporation is an American fast food company, founded in 1940 as a restaurant operated by Richard and Maurice McDonald, in San Bernardino, California, United States.",
-                ContactEmail = ""
             }
         };
 
@@ -58,62 +50,6 @@ namespace RestaurantAPI.Controllers
             }
 
             return Ok(restaurant);
-        }
-
-        // Generate a method to get restaurants filter by category
-        [HttpGet("filter")]
-        public ActionResult<List<Restaurant>> Filter([FromQuery] string category)
-        {
-            var filteredRestaurants = Restaurants.Where(p => p.Category == category).ToList();
-
-            return Ok(filteredRestaurants);
-        }
-
-        [HttpPost]
-        public ActionResult Create(Restaurant restaurant)
-        {
-            Restaurants.Add(restaurant);
-
-            return CreatedAtAction(nameof(GetById), new { id = restaurant.Id }, restaurant);
-        }
-
-        [HttpPut("{id}")]
-        public ActionResult Update(int id, Restaurant restaurant)
-        {
-            if (id != restaurant.Id)
-            {
-                return BadRequest();
-            }
-
-            var existingRestaurant = Restaurants.FirstOrDefault(p => p.Id == id);
-
-            if (existingRestaurant is null)
-            {
-                return NotFound();
-            }
-
-            existingRestaurant.Name = restaurant.Name;
-            existingRestaurant.Description = restaurant.Description;
-            existingRestaurant.HasDelivery = restaurant.HasDelivery;
-            existingRestaurant.ContactEmail = restaurant.ContactEmail;
-            existingRestaurant.ContactNumber = restaurant.ContactNumber;
-
-            return NoContent();
-        }
-
-        [HttpDelete("{id}")]
-        public ActionResult Delete(int id)
-        {
-            var restaurant = Restaurants.FirstOrDefault(p => p.Id == id);
-
-            if (restaurant is null)
-            {
-                return NotFound();
-            }
-
-            Restaurants.Remove(restaurant);
-
-            return NoContent();
         }
     }
 }
