@@ -37,6 +37,7 @@ namespace RestaurantAPI.Controllers
             return Ok(Restaurants);
         }
 
+        //Demo doc
         [HttpGet("{id}")]
         public ActionResult<Restaurant> GetById(int id)
         {
