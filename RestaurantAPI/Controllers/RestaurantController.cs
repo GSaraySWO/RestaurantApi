@@ -29,6 +29,8 @@ namespace RestaurantAPI.Controllers
             }
         };
 
+
+        // demo GHPR
         [HttpGet]
         public ActionResult<List<Restaurant>> GetAll()
         {
