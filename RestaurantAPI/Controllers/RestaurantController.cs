@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using RestaurantAPI.Entities;
+using RestaurantAPI.Resources;
+using System.Globalization;
 
 namespace RestaurantAPI.Controllers
 {
@@ -9,10 +12,13 @@ namespace RestaurantAPI.Controllers
     public class RestaurantController : ControllerBase
     {
         private readonly ILogger<RestaurantController> _logger;
+        private readonly IStringLocalizer _localizer;
 
-        public RestaurantController(ILogger<RestaurantController> logger)
+        public RestaurantController(ILogger<RestaurantController> logger, IStringLocalizerFactory factory)
         {
             _logger = logger;
+            var type = typeof(Messages);
+            _localizer = factory.Create(type);
         }
 
         private static readonly List<Restaurant> Restaurants = new List<Restaurant>
@@ -57,7 +63,7 @@ namespace RestaurantAPI.Controllers
 
             if (restaurant == null)
             {
-                return NotFound();
+                return NotFound(_localizer["Error_NotFound"]);
             }
 
             return Ok(restaurant);
@@ -68,7 +74,7 @@ namespace RestaurantAPI.Controllers
         {
             if (restaurant == null)
             {
-                return BadRequest("Restaurant cannot be null");
+                return BadRequest(_localizer["Error_RestaurantNull"]);
             }
 
             restaurant.Id = Restaurants.Count + 1; // Simple ID generation
@@ -86,7 +92,7 @@ namespace RestaurantAPI.Controllers
 
             if (existingRestaurant == null)
             {
-                return NotFound();
+                return NotFound(_localizer["Error_NotFound"]);
             }
 
             existingRestaurant.Name = restaurant.Name;
@@ -108,7 +114,7 @@ namespace RestaurantAPI.Controllers
 
             if (restaurant == null)
             {
-                return NotFound();
+                return NotFound(_localizer["Error_NotFound"]);
             }
 
             Restaurants.Remove(restaurant);
@@ -124,14 +130,14 @@ namespace RestaurantAPI.Controllers
         {
             if (string.IsNullOrEmpty(name))
             {
-                return BadRequest("Name parameter cannot be null or empty");
+                return BadRequest(_localizer["Error_NameParameter"]);
             }
 
             var matchingRestaurants = Restaurants.Where(r => r.Name.Contains(name, StringComparison.OrdinalIgnoreCase)).ToList();
 
             if (!matchingRestaurants.Any())
             {
-                return NotFound($"No restaurants found with name containing '{name}'");
+                return NotFound(string.Format(_localizer["Error_NoRestaurantsFound"], name));
             }
 
             _logger.LogInformation($"GET ►►► Searched restaurants by name: {name} ◄◄◄");

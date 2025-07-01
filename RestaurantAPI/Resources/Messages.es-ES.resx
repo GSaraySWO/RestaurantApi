@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="Welcome" xml:space="preserve">
+    <value>¡Bienvenido a la API de Restaurantes!</value>
+  </data>
+  <data name="Error_NotFound" xml:space="preserve">
+    <value>Recurso no encontrado.</value>
+  </data>
+  <data name="Error_RestaurantNull" xml:space="preserve">
+    <value>El restaurante no puede ser nulo.</value>
+  </data>
+  <data name="Error_NameParameter" xml:space="preserve">
+    <value>El parámetro nombre no puede ser nulo o vacío.</value>
+  </data>
+  <data name="Error_NoRestaurantsFound" xml:space="preserve">
+    <value>No se encontraron restaurantes con el nombre que contiene '{0}'.</value>
+  </data>
+</root>
