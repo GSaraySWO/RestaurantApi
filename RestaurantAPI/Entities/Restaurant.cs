@@ -12,6 +12,7 @@
         public int? CreatedById { get; set; }
         public int AddressId { get; set; }
         public virtual List<Dish> Dishes { get; set; }
+        public string WebsiteUrl { get; set; }
 
     }
 }
